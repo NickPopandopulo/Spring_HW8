@@ -1,4 +1,4 @@
-package com.geekbrains.ru.springmvcdemo.domain;
+package com.geekbrains.ru.springmvcdemo.domain.search;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

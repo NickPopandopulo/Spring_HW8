@@ -1,7 +1,7 @@
 package com.geekbrains.ru.springmvcdemo.service.impl;
 
 import com.geekbrains.ru.springmvcdemo.domain.Product;
-import com.geekbrains.ru.springmvcdemo.domain.ProductSearchConditional;
+import com.geekbrains.ru.springmvcdemo.domain.search.ProductSearchConditional;
 import com.geekbrains.ru.springmvcdemo.repository.ProductRepository;
 import com.geekbrains.ru.springmvcdemo.repository.specification.ProductSearchSpecification;
 import com.geekbrains.ru.springmvcdemo.service.ProductService;
@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.nio.file.Path;
 
 @Service
@@ -38,6 +39,11 @@ public class ProductServiceImpl implements ProductService {
         }
 
         productRepository.save(product);
+    }
+
+    @Override
+    public Product findById(Long id) {
+        return productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
 }

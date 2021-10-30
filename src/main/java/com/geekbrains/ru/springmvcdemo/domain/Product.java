@@ -3,14 +3,16 @@ package com.geekbrains.ru.springmvcdemo.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
-@ToString(exclude = {"categories", "customers"})
-@EqualsAndHashCode(exclude = {"categories", "customers"})
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
@@ -19,11 +21,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Имя продукта обязательно")
     private String title;
-
     private String description;
 
-    private int price;
+    @NotNull(message = "Цена продукта обязательна")
+    private Integer price;
 
     @Column(name = "image_link")
     private String imageLink;
@@ -34,14 +37,17 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> categories = new HashSet<>();;
+    @ToString.Exclude
+    private Set<Category> categories = new HashSet<>();
+    ;
 
-//    @ManyToMany
+    //    @ManyToMany
 //    @JoinTable(
 //            name = "product_customer",
 //            joinColumns = @JoinColumn(name = "product_id"),
 //            inverseJoinColumns = @JoinColumn(name = "customer_id")
 //    )
+    @ToString.Exclude
     @OneToMany(mappedBy = "product")
     private Set<PurchaseDetails> customers = new HashSet<>();
 

@@ -1,7 +1,7 @@
 package com.geekbrains.ru.springmvcdemo.repository.specification;
 
 import com.geekbrains.ru.springmvcdemo.domain.Product;
-import com.geekbrains.ru.springmvcdemo.domain.ProductSearchConditional;
+import com.geekbrains.ru.springmvcdemo.domain.search.ProductSearchConditional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 

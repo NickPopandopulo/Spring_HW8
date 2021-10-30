@@ -28,6 +28,6 @@ public class Customer {
 //            inverseJoinColumns = @JoinColumn(name = "product_id")
 //    )
     @OneToMany(mappedBy = "product")
-    private Set<PurchaseDetails> products;
+    private Set<PurchaseDetails> products = new HashSet<>();
 
 }
