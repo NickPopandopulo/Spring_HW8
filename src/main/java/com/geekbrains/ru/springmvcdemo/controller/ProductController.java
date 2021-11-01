@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Set;
@@ -29,14 +30,14 @@ public class ProductController {
     private final Validator validator;
 
     @GetMapping("/list")
-    public ModelAndView getProducts(@RequestParam(required = false) Integer minPrice,
-                                    @RequestParam(required = false) Integer maxPrice) {
+    public ModelAndView getProducts(@RequestParam(required = false) String alias, HttpServletRequest request) {
         ProductSearchConditional searchConditional = new ProductSearchConditional();
-        searchConditional.setMinPrice(minPrice);
-        searchConditional.setMaxPrice(maxPrice);
+        searchConditional.setCategory(categoryService.findByAlias(alias));
+
+        searchConditional.handleRequest(request);
 
         ModelAndView modelAndView = new ModelAndView("product/list");
-        modelAndView.addObject("products", productService.getProducts(searchConditional).getContent());
+        modelAndView.addObject("products", productService.getProducts(searchConditional));
         modelAndView.addObject("categoryTree", categoryService.getCategoryTree());
 
         return modelAndView;
@@ -55,6 +56,12 @@ public class ProductController {
         model.addAttribute("categories", categoryService.findAll());
 
         return "product/form";
+    }
+
+    @GetMapping( "/delete")
+    public RedirectView deleteProduct(@RequestParam Long id) {
+        productService.deleteById(id);
+        return new RedirectView("/product/list");
     }
 
     @PostMapping

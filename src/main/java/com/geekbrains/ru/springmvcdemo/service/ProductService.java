@@ -12,4 +12,6 @@ public interface ProductService {
     void saveProductWithImage(Product product, MultipartFile image);
 
     Product findById(Long id);
+
+    boolean deleteById(Long id);
 }

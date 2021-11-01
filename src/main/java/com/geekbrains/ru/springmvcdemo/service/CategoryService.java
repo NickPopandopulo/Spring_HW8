@@ -10,6 +10,8 @@ public interface CategoryService {
 
     Category findById(Long id);
 
+    Category findByAlias(String alias);
+
     void save(Category category);
 
     CategoryTree getCategoryTree();
