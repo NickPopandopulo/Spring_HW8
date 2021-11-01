@@ -1,14 +1,12 @@
 package com.geekbrains.ru.springmvcdemo.repository.specification;
 
+import com.geekbrains.ru.springmvcdemo.domain.Category;
 import com.geekbrains.ru.springmvcdemo.domain.Product;
 import com.geekbrains.ru.springmvcdemo.domain.search.ProductSearchConditional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +30,11 @@ public class ProductSearchSpecification implements Specification<Product> {
                 predicates.add(builder.lessThanOrEqualTo(root.get("price"), searchConditional.getMaxPrice()));
             }
 
+        }
+
+        if (searchConditional.getCategory() != null) {
+            Join<Product, Category> categories = root.join("categories");
+            predicates.add(builder.equal(categories.get("id"),searchConditional.getCategory().getId()));
         }
 
         return builder.and(predicates.toArray(Predicate[]::new));

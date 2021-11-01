@@ -1,5 +1,6 @@
 package com.geekbrains.ru.springmvcdemo.service.impl;
 
+import com.geekbrains.ru.springmvcdemo.domain.Category;
 import com.geekbrains.ru.springmvcdemo.domain.Product;
 import com.geekbrains.ru.springmvcdemo.domain.search.ProductSearchConditional;
 import com.geekbrains.ru.springmvcdemo.repository.ProductRepository;
@@ -25,10 +26,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getProducts(ProductSearchConditional searchConditional) {
-        Pageable pageable = PageRequest.of(0,8, Sort.by(Sort.Direction.ASC, "title"));
+
+        Pageable pageable = PageRequest.of(searchConditional.getPage(),
+                searchConditional.getSize(), Sort.by(Sort.Direction.ASC, "title"));
 
         ProductSearchSpecification specification = new ProductSearchSpecification(searchConditional);
         return productRepository.findAll(specification, pageable);
+
     }
 
     @Override
@@ -44,6 +48,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findById(Long id) {
         return productRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

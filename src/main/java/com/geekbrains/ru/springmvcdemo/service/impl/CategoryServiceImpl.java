@@ -31,6 +31,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category findByAlias(String alias) {
+        return categoryRepository.findByAlias(alias).orElse(null);
+    }
+
+    @Override
     public void save(Category category) {
         categoryRepository.save(category);
     }
